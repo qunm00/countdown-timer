@@ -9,8 +9,8 @@ void main() {
 }
 
 class MyAppState extends ChangeNotifier {
-  List<Event> currentEvents = Events().currentEvents;
-  List<Event> pastEvents = Events().currentEvents;
+  List<Event> upcomingEvents = EventsModel().upcomingEvents;
+  List<Event> pastEvents = EventsModel().pastEvents;
 }
 
 class MyApp extends StatelessWidget {
@@ -41,6 +41,8 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
+    var upcomingEvents = appState.upcomingEvents;
+    var pastEvents = appState.pastEvents;
     return DefaultTabController(
         length: 2,
         child: Scaffold(
@@ -51,9 +53,9 @@ class MyHomePage extends StatelessWidget {
                 Tab(text: 'Past Events')
               ]),
               title: Text(title)),
-          body: const TabBarView(children: [
-            EventsList(events: appState.currentEvents),
-            EventsList(events: appState.pastEvents),
+          body: TabBarView(children: [
+            EventsList(events: upcomingEvents),
+            EventsList(events: pastEvents),
           ]),
           floatingActionButton: FloatingActionButton(
             onPressed: () {
