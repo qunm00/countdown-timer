@@ -1,10 +1,3 @@
-// class Event {
-//   String title;
-//   DateTime on;
-
-//   Event({required this.title, required this.on});
-// }
-
 class Event {
   String title;
   DateTime on;

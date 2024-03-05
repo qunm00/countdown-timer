@@ -8,18 +8,13 @@ void main() {
   runApp(const MyApp());
 }
 
-class MyAppState extends ChangeNotifier {
-  List<Event> upcomingEvents = EventsModel().upcomingEvents;
-  List<Event> pastEvents = EventsModel().pastEvents;
-}
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (context) => MyAppState(),
+        create: (context) => EventsModel(),
         child: MaterialApp(
           title: 'Flutter Demo',
           theme: ThemeData(
@@ -40,7 +35,7 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var appState = context.watch<MyAppState>();
+    var appState = context.watch<EventsModel>();
     var upcomingEvents = appState.upcomingEvents;
     var pastEvents = appState.pastEvents;
     return DefaultTabController(

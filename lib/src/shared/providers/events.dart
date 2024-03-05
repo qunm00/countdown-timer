@@ -17,4 +17,10 @@ class EventsModel extends ChangeNotifier {
       events.where((element) => element.on.isAfter(DateTime.now())).toList();
   List<Event> get pastEvents =>
       events.where((element) => element.on.isBefore(DateTime.now())).toList();
+
+  removeEvent(Event event) {
+    debugPrint('removeEvent');
+    events.remove(event);
+    notifyListeners();
+  }
 }
