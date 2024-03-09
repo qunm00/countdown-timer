@@ -1,4 +1,5 @@
-import 'package:countdown_timer/src/components/events_list.dart';
+import 'package:countdown_timer/src/views/edit_event.dart';
+import 'package:countdown_timer/src/views/events_list.dart';
 import 'package:countdown_timer/src/shared/classes/event.dart';
 import 'package:flutter/material.dart';
 import 'src/shared/providers/events.dart';
@@ -54,9 +55,8 @@ class MyHomePage extends StatelessWidget {
           ]),
           floatingActionButton: FloatingActionButton(
             onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                content: Text('Pressed'),
-              ));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const EditEvent()));
             },
             child: const Icon(Icons.add),
           ),

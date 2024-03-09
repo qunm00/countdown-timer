@@ -19,8 +19,14 @@ class EventsModel extends ChangeNotifier {
       events.where((element) => element.on.isBefore(DateTime.now())).toList();
 
   removeEvent(Event event) {
-    debugPrint('removeEvent');
     events.remove(event);
+    notifyListeners();
+  }
+
+  addEvent(Event event) {
+    debugPrint('addEvent');
+    print('event $event');
+    events.add(event);
     notifyListeners();
   }
 }

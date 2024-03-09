@@ -3,7 +3,7 @@ class Event {
   DateTime on;
   DateTime? remind;
 
-  Event(this.title, this.on);
+  Event(this.title, this.on, [this.remind]);
 
   isPastEvent() {
     return on.isBefore(DateTime.now());

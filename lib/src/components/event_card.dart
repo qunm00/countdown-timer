@@ -42,6 +42,7 @@ class _EventCardState extends State<EventCard> {
     Timer.periodic(const Duration(seconds: 1), (timer) {
       // TODO buggy when seconds is 0, then switch tab
       // TODO past events are unhandled
+      // TODO current events become past events should automatilly be moved to past events
       if (mounted && duration > const Duration(seconds: 0)) {
         setState(() {
           duration = event.on.difference(DateTime.now());
