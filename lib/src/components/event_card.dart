@@ -19,37 +19,32 @@ class _EventCardState extends State<EventCard> {
   @override
   Widget build(BuildContext context) {
     Event event = widget.event;
-    String on = DateFormat('y MMMM d').format(event.on);
+    String on = DateFormat('yMMMd').format(event.on);
     Duration duration = event.on.difference(DateTime.now());
-    int remainingDays = duration.inSeconds ~/ (24 * 60 * 60);
-    int remainingHours = (duration.inSeconds % (24 * 60 * 60)) ~/ (60 * 60);
-    int remainingMinutes = (duration.inSeconds % (60 * 60)) ~/ (60);
-    int remainingSeconds = (duration.inSeconds % (60));
 
     String displayCountdown() {
+      int absoluteDuration = duration.inSeconds.abs();
+      int remainingDays = absoluteDuration ~/ (24 * 60 * 60);
+      int remainingHours = (absoluteDuration % (24 * 60 * 60)) ~/ (60 * 60);
+      int remainingMinutes = (absoluteDuration % (60 * 60)) ~/ (60);
+      int remainingSeconds = (absoluteDuration % 60);
+      String prefix = duration > Duration.zero ? 'until' : 'ago on';
       if (remainingDays > 0) {
-        return '$remainingDays days until $on';
+        return '$remainingDays day(s) $prefix $on';
       }
       if (remainingHours > 0) {
-        return '$remainingHours hours until $on';
+        return '$remainingHours hour(s) $prefix $on';
       }
       if (remainingMinutes > 0) {
-        return '$remainingMinutes minutes until $on';
+        return '$remainingMinutes minute(s) $prefix $on';
       }
-      return '$remainingSeconds seconds until $on';
+      return '$remainingSeconds second(s) $prefix $on';
     }
 
     Timer.periodic(const Duration(seconds: 1), (timer) {
-      // TODO buggy when seconds is 0, then switch tab
-      // TODO past events are unhandled
-      // TODO current events become past events should automatilly be moved to past events
       if (mounted && duration > const Duration(seconds: 0)) {
         setState(() {
           duration = event.on.difference(DateTime.now());
-          remainingDays = duration.inSeconds ~/ (24 * 60 * 60);
-          remainingHours = (duration.inSeconds % (24 * 60 * 60)) ~/ (60 * 60);
-          remainingMinutes = (duration.inSeconds % (60 * 60)) ~/ (60);
-          remainingSeconds = (duration.inSeconds % 60);
         });
       }
     });
@@ -65,7 +60,7 @@ class _EventCardState extends State<EventCard> {
         ),
         Row(mainAxisAlignment: MainAxisAlignment.end, children: [
           TextButton(
-              // TODO what happens when edit?
+              // TODO edit button
               onPressed: () => (debugPrint('edit')),
               child: const Text('Edit')),
           TextButton(

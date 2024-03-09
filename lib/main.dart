@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:countdown_timer/src/views/edit_event.dart';
 import 'package:countdown_timer/src/views/events_list.dart';
 import 'package:countdown_timer/src/shared/classes/event.dart';
@@ -29,16 +31,30 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
+  final String title;
   const MyHomePage({super.key, required this.title});
 
-  final String title;
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
 
+class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     var appState = context.watch<EventsModel>();
     var upcomingEvents = appState.upcomingEvents;
     var pastEvents = appState.pastEvents;
+    Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (mounted) {
+        // TODO optimize so that the list only update when there is past event
+        // * does not need to periodically check
+        setState(() {
+          upcomingEvents = appState.upcomingEvents;
+          pastEvents = appState.pastEvents;
+        });
+      }
+    });
     return DefaultTabController(
         length: 2,
         child: Scaffold(
@@ -48,7 +64,7 @@ class MyHomePage extends StatelessWidget {
                 Tab(text: 'Upcoming Events'),
                 Tab(text: 'Past Events')
               ]),
-              title: Text(title)),
+              title: Text(widget.title)),
           body: TabBarView(children: [
             EventsList(events: upcomingEvents),
             EventsList(events: pastEvents),

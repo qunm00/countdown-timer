@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 class EventsModel extends ChangeNotifier {
   // TODO sorted by on
+  // TODO persistence in memory
   List<Event> events = [
     Event("Valentine's Day", DateTime(2024, 02, 14)),
     Event('Halloween', DateTime(2024, 10, 31)),
