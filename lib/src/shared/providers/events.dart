@@ -1,33 +1,41 @@
 import 'package:countdown_timer/src/shared/classes/event.dart';
+import 'package:countdown_timer/src/shared/utils/event_sql.dart';
 import 'package:flutter/material.dart';
 
 class EventsModel extends ChangeNotifier {
-  // TODO sorted by on
-  // TODO persistence in memory
-  List<Event> events = [
-    Event("Valentine's Day", DateTime(2024, 02, 14)),
-    Event('Halloween', DateTime(2024, 10, 31)),
-    Event('Tomorrow', DateTime.now().add(const Duration(days: 1))),
-    Event(
-        '10 minutes from now', DateTime.now().add(const Duration(minutes: 10))),
-    Event(
-        '10 seconds from now', DateTime.now().add(const Duration(seconds: 10)))
-  ];
+  List<Event> events = [];
 
   List<Event> get upcomingEvents =>
       events.where((element) => element.on.isAfter(DateTime.now())).toList();
   List<Event> get pastEvents =>
       events.where((element) => element.on.isBefore(DateTime.now())).toList();
 
-  removeEvent(Event event) {
-    events.remove(event);
-    notifyListeners();
+  Future<void> getEvents() async {
+    List<Map<String, dynamic>> result = await EventSQLite.getItems();
+    events = List.generate(result.length, (index) {
+      Map<String, Object?> event = result[index];
+      return Event.fromJson(event);
+    });
   }
 
-  addEvent(Event event) {
-    debugPrint('addEvent');
-    print('event $event');
-    events.add(event);
+  Future<Event> getEvent(id) async {
+    List<Map<String, dynamic>> result = await EventSQLite.getItem(id);
+    if (result.isEmpty) throw 'Event is not found';
+    return Event.fromJson(result[0]);
+  }
+
+  Future<int> updateEvent(id, {title, on, remind}) async {
+    int updatedItem = await EventSQLite.updateItem(id, title, on, remind);
+    return updatedItem;
+  }
+
+  Future<void> removeEvent(Event event) async {
+    await EventSQLite.deleteItem(event.id);
+  }
+
+  Future<void> addEvent(Map<String, dynamic> event) async {
+    await EventSQLite.createItem(event['title'], event['on'], event['remind']);
+    await getEvents();
     notifyListeners();
   }
 }

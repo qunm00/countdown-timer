@@ -160,13 +160,17 @@ class _EditEventState extends State<EditEvent> {
                     const SizedBox(width: 10),
                     ElevatedButton(
                         onPressed: () {
+                          // TODO should close edit page
+                          // TODO should handle error
+                          // TODO should handle success
                           if (_formKey.currentState!.validate()) {
-                            Event event = Event(
-                              _title.text,
-                              DateFormat.yMMMd().parse(_dateController.text),
-                              DateFormat.yMMMd()
+                            Map<String, dynamic> event = {
+                              'title': _title.text,
+                              'on': DateFormat.yMMMd()
+                                  .parse(_dateController.text),
+                              'reminder': DateFormat.yMMMd()
                                   .parse(_remindOnController.text),
-                            );
+                            };
                             appState.addEvent(event);
                             ScaffoldMessenger.of(context).hideCurrentSnackBar();
                           }
