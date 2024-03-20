@@ -159,20 +159,25 @@ class _EditEventState extends State<EditEvent> {
                         child: const Text('Reset')),
                     const SizedBox(width: 10),
                     ElevatedButton(
-                        onPressed: () {
-                          // TODO should close edit page
-                          // TODO should handle error
-                          // TODO should handle success
-                          if (_formKey.currentState!.validate()) {
-                            Map<String, dynamic> event = {
-                              'title': _title.text,
-                              'on': DateFormat.yMMMd()
-                                  .parse(_dateController.text),
-                              'reminder': DateFormat.yMMMd()
-                                  .parse(_remindOnController.text),
-                            };
-                            appState.addEvent(event);
-                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                        onPressed: () async {
+                          try {
+                            if (_formKey.currentState!.validate()) {
+                              Map<String, dynamic> event = {
+                                'title': _title.text,
+                                'on': DateFormat.yMMMd()
+                                    .parse(_dateController.text),
+                                'reminder': DateFormat.yMMMd()
+                                    .parse(_remindOnController.text),
+                              };
+                              await appState.addEvent(event);
+                              Navigator.pop(context);
+                            }
+                          } catch (error) {
+                            const snackBar = SnackBar(
+                                content: Text('Unable to save the event'));
+                            debugPrint('$error');
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
                           }
                         },
                         child: const Text('Submit'))

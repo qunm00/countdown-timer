@@ -31,11 +31,11 @@ class EventsModel extends ChangeNotifier {
 
   Future<void> removeEvent(Event event) async {
     await EventSQLite.deleteItem(event.id);
+    await getEvents();
   }
 
   Future<void> addEvent(Map<String, dynamic> event) async {
     await EventSQLite.createItem(event['title'], event['on'], event['remind']);
     await getEvents();
-    notifyListeners();
   }
 }

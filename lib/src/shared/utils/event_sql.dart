@@ -37,7 +37,6 @@ class EventSQLite {
     };
     final id =
         db.insert('events', data, conflictAlgorithm: ConflictAlgorithm.replace);
-
     return id;
   }
 

@@ -14,7 +14,7 @@ class Event {
 
   factory Event.fromJson(Map<String, dynamic> event) {
     return Event(event['id'], event['title'], DateTime.parse(event['happenOn']),
-        DateTime.parse(event['remind']));
+        DateTime.tryParse(event['remind']));
   }
 
   Map<String, Object?> toJson() {
