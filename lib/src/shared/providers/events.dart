@@ -18,14 +18,15 @@ class EventsModel extends ChangeNotifier {
     });
   }
 
-  Future<Event> getEvent(id) async {
+  static Future<Event> getEvent(int id) async {
     List<Map<String, dynamic>> result = await EventSQLite.getItem(id);
     if (result.isEmpty) throw 'Event is not found';
     return Event.fromJson(result[0]);
   }
 
-  Future<int> updateEvent(id, {title, on, remind}) async {
-    int updatedItem = await EventSQLite.updateItem(id, title, on, remind);
+  Future<int> updateEvent(id, Map<String, dynamic> event) async {
+    int updatedItem = await EventSQLite.updateItem(
+        id, event['title'], event['on'], event['remind']);
     return updatedItem;
   }
 

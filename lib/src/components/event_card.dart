@@ -1,4 +1,5 @@
 import 'package:countdown_timer/src/shared/providers/events.dart';
+import 'package:countdown_timer/src/views/edit_event.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'dart:async';
@@ -60,8 +61,10 @@ class _EventCardState extends State<EventCard> {
         ),
         Row(mainAxisAlignment: MainAxisAlignment.end, children: [
           TextButton(
-              // TODO edit button
-              onPressed: () => (debugPrint('edit')),
+              onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => EditEvent(id: event.id))),
               child: const Text('Edit')),
           TextButton(
             onPressed: () => appState.removeEvent(event),
