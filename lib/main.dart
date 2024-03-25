@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:countdown_timer/src/views/edit_event.dart';
 import 'package:countdown_timer/src/views/events_list.dart';
-import 'package:countdown_timer/src/shared/classes/event.dart';
 import 'package:flutter/material.dart';
 import 'src/shared/providers/events.dart';
 import 'package:provider/provider.dart';
@@ -45,6 +44,10 @@ class _MyHomePageState extends State<MyHomePage> {
     var appState = context.watch<EventsModel>();
     var upcomingEvents = appState.upcomingEvents;
     var pastEvents = appState.pastEvents;
+    Future<bool> populatedEvents() async {
+      return appState.getEvents();
+    }
+
     Timer.periodic(const Duration(seconds: 1), (timer) {
       if (mounted) {
         // TODO optimize so that the list only update when there is past event
@@ -65,10 +68,19 @@ class _MyHomePageState extends State<MyHomePage> {
                 Tab(text: 'Past Events')
               ]),
               title: Text(widget.title)),
-          body: TabBarView(children: [
-            EventsList(events: upcomingEvents),
-            EventsList(events: pastEvents),
-          ]),
+          body: FutureBuilder(
+              future: populatedEvents(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return TabBarView(children: [
+                    EventsList(events: upcomingEvents),
+                    EventsList(events: pastEvents),
+                  ]);
+                } else if (snapshot.hasError) {
+                  return Center(child: Text("Error: ${snapshot.error}"));
+                }
+                return const Center(child: CircularProgressIndicator());
+              }),
           floatingActionButton: FloatingActionButton(
             onPressed: () {
               Navigator.push(context,

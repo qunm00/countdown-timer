@@ -10,12 +10,14 @@ class EventsModel extends ChangeNotifier {
   List<Event> get pastEvents =>
       events.where((element) => element.on.isBefore(DateTime.now())).toList();
 
-  Future<void> getEvents() async {
+  Future<bool> getEvents() async {
     List<Map<String, dynamic>> result = await EventSQLite.getItems();
     events = List.generate(result.length, (index) {
       Map<String, Object?> event = result[index];
       return Event.fromJson(event);
     });
+    if (events.isEmpty) return true;
+    return false;
   }
 
   static Future<Event> getEvent(int id) async {
