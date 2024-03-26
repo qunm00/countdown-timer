@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:countdown_timer/src/views/edit_event.dart';
 import 'package:countdown_timer/src/views/events_list.dart';
 import 'package:flutter/material.dart';
-import 'src/shared/providers/events.dart';
+import 'src/providers/events.dart';
 import 'package:provider/provider.dart';
 
 void main() {

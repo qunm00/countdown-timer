@@ -1,6 +1,6 @@
-import 'package:countdown_timer/src/components/event_card.dart';
+import 'package:countdown_timer/src/views/components/event_card.dart';
 import 'package:flutter/material.dart';
-import 'package:countdown_timer/src/shared/classes/event.dart';
+import 'package:countdown_timer/src/classes/event.dart';
 
 class EventsList extends StatefulWidget {
   final List<Event> events;

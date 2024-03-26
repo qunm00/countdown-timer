@@ -1,5 +1,5 @@
-import 'package:countdown_timer/src/shared/classes/event.dart';
-import 'package:countdown_timer/src/shared/providers/events.dart';
+import 'package:countdown_timer/src/classes/event.dart';
+import 'package:countdown_timer/src/providers/events.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';

@@ -1,5 +1,5 @@
-import 'package:countdown_timer/src/shared/classes/event.dart';
-import 'package:countdown_timer/src/shared/utils/event_sql.dart';
+import 'package:countdown_timer/src/classes/event.dart';
+import 'package:countdown_timer/src/models/event_sql.dart';
 import 'package:flutter/material.dart';
 
 class EventsModel extends ChangeNotifier {
